@@ -1,0 +1,35 @@
+# Render Blueprint for Terra Consulting Server
+# Deploy to: https://dashboard.render.com/blueprints
+
+services:
+  - type: web
+    name: terra-consulting-api
+    runtime: node
+    region: frankfurt # Closest to Kenya
+    plan: starter
+    rootDir: server
+    buildCommand: npm install && npx prisma generate
+    startCommand: npx prisma migrate deploy && node dist/index.js
+    
+    # Environment Variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        value: file:/var/data/dev.db
+      - key: ALLOWED_ORIGINS
+        sync: false # Set manually in Render dashboard
+    
+    # Persistent Disk for SQLite database
+    disk:
+      name: terra-data
+      mountPath: /var/data
+      sizeGB: 1
+    
+    # Health Check
+    healthCheckPath: /api/health
+    
+    # Auto Deploy on push
+    autoDeploy: true

@@ -1,0 +1,6 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": ".next",
+    "framework": "nextjs",
+    "ignoreCommand": "if [ -d ../server ]; then exit 0; else exit 1; fi"
+}

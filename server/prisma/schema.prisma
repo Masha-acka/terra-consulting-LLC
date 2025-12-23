@@ -1,0 +1,125 @@
+// Prisma Schema for Terra Consulting LLC Property Database
+// Using SQLite for local development
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  priceKes      Float    @map("price_kes")
+  priceUsd      Float?   @map("price_usd")
+  
+  // Category: LAND, HOUSE, COMMERCIAL
+  category      String
+  
+  // Status: SALE, LEASE
+  status        String
+  
+  // Location
+  location      String
+  lat           Float?
+  lng           Float?
+  
+  // Property Details
+  bedrooms      Int?
+  bathrooms     Int?
+  sizeSqft      Float?   @map("size_sqft")
+  
+  // Images stored as JSON array
+  images        String   @default("[]")
+  
+  // Amenities stored as JSON array
+  amenities     String   @default("[]")
+  
+  // Verification status
+  titleVerified Boolean  @default(false) @map("title_verified")
+  
+  // Expiration Logic
+  isActive      Boolean  @default(true) @map("is_active")
+  expiresAt     DateTime? @map("expires_at")
+  durationDays  Int      @default(30) @map("duration_days")
+
+  // Relations
+  ownerId       String?
+  owner         User?    @relation(fields: [ownerId], references: [id])
+  savedBy       SavedProperty[]
+  views         PropertyView[]
+  leads         Lead[]
+  
+  // Timestamps
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("properties")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  password        String
+  name            String
+  phone           String?
+  role            String   @default("BUYER") // BUYER, SELLER, AGENT, ADMIN
+  avatar          String?
+  properties      Property[]
+  savedProperties SavedProperty[]
+  isActive        Boolean  @default(true) // User account status
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  leads           Lead[]   @relation("SellerLeads")
+}
+
+model SavedProperty {
+  id         String   @id @default(cuid())
+  userId     String
+  propertyId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  savedAt    DateTime @default(now())
+
+  @@unique([userId, propertyId])
+}
+
+model PropertyView {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  visitorId  String?  // Unique visitor identifier (from cookie/localStorage)
+  userId     String?  // Logged-in user ID if available
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+  @@index([createdAt])
+  @@map("property_views")
+}
+
+model Lead {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  message    String?
+  status     String   @default("NEW") // NEW, CONTACTED, CLOSED, LOST
+  
+  propertyId String?
+  property   Property? @relation(fields: [propertyId], references: [id])
+  
+  sellerId   String?
+  seller     User?     @relation("SellerLeads", fields: [sellerId], references: [id])
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("leads")
+}
+

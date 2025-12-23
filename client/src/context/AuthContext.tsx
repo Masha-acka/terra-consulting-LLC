@@ -1,0 +1,105 @@
+'use client';
+
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: 'BUYER' | 'SELLER' | 'AGENT' | 'ADMIN';
+    phone?: string;
+    avatar?: string;
+}
+
+interface AuthContextType {
+    user: User | null;
+    isLoading: boolean;
+    login: (user: User) => void;
+    logout: () => void;
+    isAuthenticated: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+    const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+
+    useEffect(() => {
+        // Check if user is logged in
+        async function checkAuth() {
+            try {
+                // First check API
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+                    headers: { 'Content-Type': 'application/json' },
+                    cache: 'no-store',
+                    credentials: 'include',
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const userData = data.user || data; // Handle wrapped or unwrapped response
+                    setUser(userData);
+                    // Update local storage to keep in sync
+                    localStorage.setItem('terra_user', JSON.stringify(userData));
+                } else {
+                    // Token invalid or expired
+                    localStorage.removeItem('terra_user');
+                    setUser(null);
+                }
+            } catch (error) {
+                console.warn('Auth check failed (likely network error or server down), falling back to local storage.');
+                // Checking localStorage for persisted user as fallback
+                const stored = localStorage.getItem('terra_user');
+                if (stored) {
+                    setUser(JSON.parse(stored));
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        checkAuth();
+    }, []);
+
+    const login = (userData: User) => {
+        setUser(userData);
+        localStorage.setItem('terra_user', JSON.stringify(userData));
+
+        // Redirect based on role
+        if (userData.role === 'BUYER') {
+            router.push('/');
+        } else if (userData.role === 'ADMIN') {
+            router.push('/admin/dashboard');
+        } else {
+            router.push('/seller/dashboard');
+        }
+    };
+
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem('terra_user');
+        // Also call API to clear cookie
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        router.push('/');
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, isLoading, login, logout, isAuthenticated: !!user }}>
+            {children}
+        </AuthContext.Provider>
+    );
+}
+
+export function useAuth() {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+}
