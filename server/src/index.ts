@@ -65,6 +65,10 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leads', leadsRoutes);
 
+// Temporary debug admin route
+import debugAdminRoutes from './routes/debug-admin';
+app.use('/api', debugAdminRoutes);
+
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
