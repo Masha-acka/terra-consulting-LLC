@@ -5,10 +5,8 @@ import fs from 'fs';
 
 const router = express.Router();
 
-// Ensure uploads directory exists - use persistent disk in production
-const uploadDir = process.env.NODE_ENV === 'production'
-    ? path.join('/var/data', 'uploads')  // Persistent disk on Render
-    : path.join(process.cwd(), 'uploads'); // Local development
+// Ensure uploads directory exists
+const uploadDir = path.join(process.cwd(), 'uploads');
 
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });

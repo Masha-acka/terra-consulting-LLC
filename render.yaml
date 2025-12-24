@@ -9,7 +9,7 @@ services:
     plan: free # Can upgrade to starter ($7/month) for better performance
     rootDir: server
     buildCommand: npm install && npm run build && npx prisma generate
-    startCommand: mkdir -p /var/data && chmod 755 /var/data && npx prisma migrate deploy && node dist/index.js
+    startCommand: npx prisma migrate deploy && node dist/index.js
     
     # Environment Variables
     envVars:
@@ -25,12 +25,6 @@ services:
         generateValue: true # Render will generate a secure random secret
       - key: ALLOWED_ORIGINS
         sync: false # Set manually to your Vercel frontend URL after deployment
-    
-    # Persistent Disk for SQLite database AND uploads
-    disk:
-      name: terra-data
-      mountPath: /var/data
-      sizeGB: 1
     
     # Health Check
     healthCheckPath: /api/health
