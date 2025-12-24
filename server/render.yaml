@@ -6,9 +6,8 @@ services:
     name: terra-consulting-api
     runtime: node
     region: frankfurt # Closest to Kenya
-    plan: starter
-    rootDir: server
-    buildCommand: npm install && npx prisma generate
+    plan: free # Can upgrade to starter ($7/month) for better performance
+    buildCommand: npm install && npm run build && npx prisma generate
     startCommand: npx prisma migrate deploy && node dist/index.js
     
     # Environment Variables
@@ -19,10 +18,12 @@ services:
         value: 5000
       - key: DATABASE_URL
         value: file:/var/data/dev.db
+      - key: JWT_SECRET
+        generateValue: true # Render will generate a secure random secret
       - key: ALLOWED_ORIGINS
-        sync: false # Set manually in Render dashboard
+        sync: false # Set manually to your Vercel frontend URL after deployment
     
-    # Persistent Disk for SQLite database
+    # Persistent Disk for SQLite database AND uploads
     disk:
       name: terra-data
       mountPath: /var/data
@@ -33,3 +34,4 @@ services:
     
     # Auto Deploy on push
     autoDeploy: true
+

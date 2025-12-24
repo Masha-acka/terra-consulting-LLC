@@ -58,8 +58,11 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leads', leadsRoutes);
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Serve uploaded files from persistent storage in production
+const uploadsPath = process.env.NODE_ENV === 'production'
+    ? '/var/data/uploads'
+    : path.join(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadsPath));
 
 // Health check endpoint
 app.get('/api/health', (req: Request, res: Response) => {
