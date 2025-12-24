@@ -39,6 +39,27 @@ export default function AdminLeadsTable({ leads, onRefresh }: AdminLeadsTablePro
         ), { duration: 5000, icon: '⚠️' });
     };
 
+    const updateLeadStatus = async (id: string, status: string) => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ status })
+            });
+
+            if (res.ok) {
+                toast.success('Status updated');
+                onRefresh();
+            } else {
+                toast.error('Failed to update status');
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('An error occurred');
+        }
+    };
+
     const handleDelete = async (id: string) => {
         setDeletingId(id);
         try {
@@ -145,9 +166,20 @@ export default function AdminLeadsTable({ leads, onRefresh }: AdminLeadsTablePro
                                     {lead.seller?.name || '-'}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-600 rounded-full">
-                                        {lead.status}
-                                    </span>
+                                    <select
+                                        value={lead.status}
+                                        onChange={(e) => updateLeadStatus(lead.id, e.target.value)}
+                                        className={`text-xs font-medium px-2 py-1 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-[var(--marketing-green)] ${lead.status === 'NEW' ? 'bg-blue-50 text-blue-700' :
+                                            lead.status === 'CONTACTED' ? 'bg-yellow-50 text-yellow-700' :
+                                                lead.status === 'CLOSED' ? 'bg-green-50 text-green-700' :
+                                                    'bg-gray-100 text-gray-600'
+                                            }`}
+                                    >
+                                        <option value="NEW">New</option>
+                                        <option value="CONTACTED">Contacted</option>
+                                        <option value="CLOSED">Closed</option>
+                                        <option value="LOST">Lost</option>
+                                    </select>
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <button

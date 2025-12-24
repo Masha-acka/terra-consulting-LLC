@@ -19,6 +19,7 @@ export default function ManualLeadForm({ sellerId, properties, onClose, onSucces
         phone: '',
         message: 'Manual entry via Dashboard',
         propertyId: properties.length > 0 ? properties[0].id : '',
+        status: 'NEW'
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -112,6 +113,20 @@ export default function ManualLeadForm({ sellerId, properties, onClose, onSucces
                                 {properties.map(p => (
                                     <option key={p.id} value={p.id}>{p.title}</option>
                                 ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select
+                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--marketing-green)] focus:border-transparent outline-none transition-all bg-white"
+                                value={formData.status}
+                                onChange={e => setFormData({ ...formData, status: e.target.value })}
+                            >
+                                <option value="NEW">New</option>
+                                <option value="CONTACTED">Contacted</option>
+                                <option value="CLOSED">Closed</option>
+                                <option value="LOST">Lost</option>
                             </select>
                         </div>
                     </div>

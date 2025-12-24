@@ -16,6 +16,7 @@ export default function AdminLeadForm({ onClose, onSuccess }: AdminLeadFormProps
         email: '',
         phone: '',
         message: 'Manual entry by Admin',
+        status: 'NEW'
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -94,6 +95,20 @@ export default function AdminLeadForm({ onClose, onSuccess }: AdminLeadFormProps
                             value={formData.phone}
                             onChange={e => setFormData({ ...formData, phone: e.target.value })}
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Status</label>
+                        <select
+                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[var(--sage-green)] outline-none bg-white"
+                            value={formData.status}
+                            onChange={e => setFormData({ ...formData, status: e.target.value })}
+                        >
+                            <option value="NEW">New</option>
+                            <option value="CONTACTED">Contacted</option>
+                            <option value="CLOSED">Closed</option>
+                            <option value="LOST">Lost</option>
+                        </select>
                     </div>
 
                     <div>

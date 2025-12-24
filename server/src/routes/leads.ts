@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // Create a new lead (Public or authenticated)
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { name, email, phone, message, propertyId, sellerId } = req.body;
+        const { name, email, phone, message, propertyId, sellerId, status } = req.body;
 
         if (!name || !email) {
             return res.status(400).json({ error: 'Name and email are required' });
@@ -32,7 +32,7 @@ router.post('/', async (req: Request, res: Response) => {
                 message,
                 propertyId: propertyId || null,
                 sellerId: derivedSellerId || null,
-                status: 'NEW'
+                status: status || 'NEW'
             }
         });
 
