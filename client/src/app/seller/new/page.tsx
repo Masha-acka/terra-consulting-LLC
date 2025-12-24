@@ -288,7 +288,7 @@ export default function NewPropertyPage() {
                         </div>
 
                         <div className="pt-6 border-t border-gray-100 flex justify-end gap-4">
-                            <Link href="/dashboard/seller" className="py-3 px-8 rounded-xl text-gray-600 hover:bg-gray-100 font-medium transition-colors">Cancel</Link>
+                            <Link href={user?.role === 'ADMIN' ? '/admin/dashboard' : '/seller/dashboard'} className="py-3 px-8 rounded-xl text-gray-600 hover:bg-gray-100 font-medium transition-colors">Cancel</Link>
                             <button
                                 type="submit" disabled={loading}
                                 className="btn-primary py-3 px-10 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50"

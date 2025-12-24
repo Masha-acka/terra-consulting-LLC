@@ -155,7 +155,8 @@ router.post('/leads', authenticateToken, requireRole(['ADMIN']), async (req: Aut
         const { name, email, phone, message, propertyId } = req.body;
         const lead = await prisma.lead.create({
             data: {
-                name, email, phone, message, propertyId
+                name, email, phone, message, propertyId,
+                sellerId: req.user?.id // Assign to admin
             }
         });
         res.status(201).json(lead);
