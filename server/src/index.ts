@@ -65,6 +65,10 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leads', leadsRoutes);
 
+// Temporary admin seed route - REMOVE AFTER USE
+import seedAdminRoutes from './routes/seed-admin';
+app.use('/api', seedAdminRoutes);
+
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
