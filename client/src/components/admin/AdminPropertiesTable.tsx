@@ -35,9 +35,32 @@ export default function AdminPropertiesTable({ properties, onRefresh }: AdminPro
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this property?')) return;
+    const confirmDelete = (id: string) => {
+        toast((t) => (
+            <div className="flex flex-col gap-2">
+                <span className="font-medium text-gray-900">Delete this property?</span>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => {
+                            toast.dismiss(t.id);
+                            handleDelete(id);
+                        }}
+                        className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), { duration: 5000, icon: '⚠️' });
+    };
 
+    const handleDelete = async (id: string) => {
         setDeletingId(id);
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/properties/${id}`, {
@@ -113,7 +136,7 @@ export default function AdminPropertiesTable({ properties, onRefresh }: AdminPro
                                     )}
 
                                     <button
-                                        onClick={() => handleDelete(property.id)}
+                                        onClick={() => confirmDelete(property.id)}
                                         disabled={deletingId === property.id}
                                         className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
                                         title="Delete Property"
