@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface User {
     id: string;
@@ -78,15 +79,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        // Clear user state immediately
         setUser(null);
         localStorage.removeItem('terra_user');
-        // Also call API to clear cookie
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
-            method: 'POST',
-            credentials: 'include'
-        });
-        router.push('/');
+
+        try {
+            // Call API to clear cookie
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (error) {
+            console.error('Logout API error:', error);
+        }
+
+        // Show success toast
+        toast.success('Logged out successfully!');
+
+        // Use hard redirect to clear any cached state
+        window.location.href = '/';
     };
 
     return (

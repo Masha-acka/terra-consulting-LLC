@@ -108,7 +108,12 @@ router.post('/login', async (req: Request, res: Response) => {
 
 // Logout
 router.post('/logout', (req: Request, res: Response) => {
-    res.clearCookie('token');
+    // Clear cookie with same settings as login for cross-origin
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    });
     res.json({ message: 'Logged out successfully' });
 });
 
