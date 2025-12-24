@@ -31,7 +31,7 @@ model Property {
   // Property Details
   bedrooms      Int?
   bathrooms     Int?
-  sizeSqft      Float?   @map("size_sqft")
+  sizeAcres     Float?   @map("size_acres")
   
   // Images stored as JSON array
   images        String   @default("[]")

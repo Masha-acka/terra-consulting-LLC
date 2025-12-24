@@ -100,7 +100,7 @@ router.post('/properties', authenticateToken, requireRole(['SELLER', 'AGENT', 'A
     try {
         const {
             title, description, priceKes, priceUsd, category, status,
-            location, lat, lng, bedrooms, bathrooms, sizeSqft,
+            location, lat, lng, bedrooms, bathrooms, sizeAcres,
             images, amenities, durationDays
         } = req.body;
 
@@ -129,7 +129,7 @@ router.post('/properties', authenticateToken, requireRole(['SELLER', 'AGENT', 'A
                 lng: lng ? parseFloat(lng) : null,
                 bedrooms: bedrooms ? parseInt(bedrooms) : null,
                 bathrooms: bathrooms ? parseInt(bathrooms) : null,
-                sizeSqft: sizeSqft ? parseFloat(sizeSqft) : null,
+                sizeAcres: sizeAcres ? parseFloat(sizeAcres) : null,
                 images: JSON.stringify(images || []),
                 amenities: JSON.stringify(amenities || []),
                 titleVerified: false, // Default to unverified
@@ -164,7 +164,7 @@ router.put('/properties/:id', authenticateToken, requireRole(['SELLER', 'AGENT',
 
         const {
             title, description, priceKes, priceUsd, category, status,
-            location, lat, lng, bedrooms, bathrooms, sizeSqft,
+            location, lat, lng, bedrooms, bathrooms, sizeAcres,
             images, amenities, durationDays
         } = req.body;
 
@@ -187,7 +187,7 @@ router.put('/properties/:id', authenticateToken, requireRole(['SELLER', 'AGENT',
                 lng: lng ? parseFloat(lng) : null,
                 bedrooms: bedrooms ? parseInt(bedrooms) : null,
                 bathrooms: bathrooms ? parseInt(bathrooms) : null,
-                sizeSqft: sizeSqft ? parseFloat(sizeSqft) : null,
+                sizeAcres: sizeAcres ? parseFloat(sizeAcres) : null,
                 images: JSON.stringify(images || []),
                 amenities: JSON.stringify(amenities || []),
                 ...(durationDays && { durationDays: parseInt(durationDays), expiresAt })

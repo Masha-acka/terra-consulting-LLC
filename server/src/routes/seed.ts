@@ -22,7 +22,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Ruiru, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.5, // 1/2 Acre
+                sizeAcres: 0.5, // 1/2 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800',
                     'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800'
@@ -40,7 +40,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Juja Farm, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.25, // 1/4 Acre
+                sizeAcres: 0.25, // 1/4 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1595877244574-e90ce41ce089?w=800',
                     'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=800'
@@ -58,7 +58,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Limuru, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 5, // 5 Acres
+                sizeAcres: 5, // 5 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',
                     'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800'
@@ -76,7 +76,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Thika Town, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.125, // 1/8 Acre
+                sizeAcres: 0.125, // 1/8 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800'
                 ]),
@@ -94,7 +94,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kangundo Road, Nairobi County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.25, // 1/4 Acre
+                sizeAcres: 0.25, // 1/4 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800',
                     'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800'
@@ -112,7 +112,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kasarani, Nairobi County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.115, // 50x100 ft ≈ 0.115 Acres
+                sizeAcres: 0.115, // 50x100 ft ≈ 0.115 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1595877244574-e90ce41ce089?w=800'
                 ]),
@@ -130,7 +130,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kenol, Murang\'a County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 2, // 2 Acres
+                sizeAcres: 2, // 2 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=800',
                     'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800'
@@ -148,7 +148,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Maragua, Murang\'a County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 10, // 10 Acres
+                sizeAcres: 10, // 10 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800',
                     'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800'
@@ -166,7 +166,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Murang\'a Town, Murang\'a County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.5, // 1/2 Acre
+                sizeAcres: 0.5, // 1/2 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1595877244574-e90ce41ce089?w=800'
                 ]),
@@ -184,7 +184,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Runda Mimosa, Kiambu County',
                 bedrooms: 4,
                 bathrooms: 3,
-                sizeSqft: 0.5, // Half acre compound
+                sizeAcres: 0.5, // Half acre compound
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
                     'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
@@ -203,7 +203,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kiambu Road, Kiambu County',
                 bedrooms: 3,
                 bathrooms: 2,
-                sizeSqft: 0.125, // 1/8 acre
+                sizeAcres: 0.125, // 1/8 acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
                     'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800'
@@ -222,7 +222,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Karen, Nairobi County',
                 bedrooms: 5,
                 bathrooms: 6,
-                sizeSqft: 1, // 1 Acre
+                sizeAcres: 1, // 1 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
                     'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
@@ -241,7 +241,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kilimani, Nairobi County',
                 bedrooms: 3,
                 bathrooms: 2,
-                sizeSqft: 0.05, // Apartment plot share
+                sizeAcres: 0.05, // Apartment plot share
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
                     'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'
@@ -260,7 +260,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Westlands, Nairobi County',
                 bedrooms: null,
                 bathrooms: 2,
-                sizeSqft: 0.1, // Commercial space
+                sizeAcres: 0.1, // Commercial space
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
                     'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800'
@@ -278,7 +278,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Thika Town, Kiambu County',
                 bedrooms: null,
                 bathrooms: 1,
-                sizeSqft: 0.03, // Small retail
+                sizeAcres: 0.03, // Small retail
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800'
                 ]),
@@ -295,7 +295,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Industrial Area, Nairobi County',
                 bedrooms: null,
                 bathrooms: 4,
-                sizeSqft: 0.5, // 0.5 Acres
+                sizeAcres: 0.5, // 0.5 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800'
                 ]),
@@ -313,7 +313,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kikuyu Town, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 0.25, // 1/4 Acre
+                sizeAcres: 0.25, // 1/4 Acre
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800'
                 ]),
@@ -330,7 +330,7 @@ router.post('/seed-properties', async (req, res) => {
                 location: 'Kiambaa, Kiambu County',
                 bedrooms: null,
                 bathrooms: null,
-                sizeSqft: 3, // 3 Acres
+                sizeAcres: 3, // 3 Acres
                 images: JSON.stringify([
                     'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',
                     'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800'

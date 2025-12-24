@@ -104,7 +104,7 @@ export default function PropertyCard({ property, isSelected, onClick, isFavorite
                         ) : null}
                         <div className={`flex flex-col items-center p-2 bg-gray-50 rounded-xl ${property.category === 'LAND' ? 'col-span-3' : ''}`}>
                             <Maximize className="w-4 h-4 text-[var(--marketing-green)] mb-1" />
-                            <span className="text-sm font-bold text-gray-900">{(property.sizeSqft || 0).toLocaleString()}</span>
+                            <span className="text-sm font-bold text-gray-900">{(property.sizeAcres || 0).toLocaleString()}</span>
                             <span className="text-[10px] text-gray-400 uppercase">Acres</span>
                         </div>
                     </div>

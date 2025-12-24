@@ -16,7 +16,7 @@ const properties = [
         lng: 36.9425,
         bedrooms: null,
         bathrooms: null,
-        sizeSqft: 10890,
+        sizeAcres: 10890,
         images: JSON.stringify([
             'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800',
             'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800',
@@ -37,7 +37,7 @@ const properties = [
         lng: 36.7869,
         bedrooms: 3,
         bathrooms: 2,
-        sizeSqft: 2200,
+        sizeAcres: 2200,
         images: JSON.stringify([
             'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
             'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
@@ -58,7 +58,7 @@ const properties = [
         lng: 36.7114,
         bedrooms: 5,
         bathrooms: 4,
-        sizeSqft: 6500,
+        sizeAcres: 6500,
         images: JSON.stringify([
             'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
             'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
@@ -79,7 +79,7 @@ const properties = [
         lng: 36.8110,
         bedrooms: null,
         bathrooms: 2,
-        sizeSqft: 3500,
+        sizeAcres: 3500,
         images: JSON.stringify([
             'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
             'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
@@ -100,7 +100,7 @@ const properties = [
         lng: 36.9611,
         bedrooms: null,
         bathrooms: null,
-        sizeSqft: 217800,
+        sizeAcres: 217800,
         images: JSON.stringify([
             'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=800',
             'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',

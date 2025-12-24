@@ -429,7 +429,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
                                     <polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
                                     <line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>
                                 </svg>
-                                <div class="feature-value">${(property.sizeSqft || 0).toLocaleString()}</div>
+                                <div class="feature-value">${(property.sizeAcres || 0).toLocaleString()}</div>
                                 <div class="feature-label">Acres</div>
                             </div>
                             <div class="feature-card">
@@ -617,7 +617,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
                             )}
                             <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center text-center">
                                 <Maximize className="w-6 h-6 text-[var(--forest-green)] mb-2" />
-                                <span className="block font-bold text-lg text-gray-900">{(property.sizeSqft || 0).toLocaleString()}</span>
+                                <span className="block font-bold text-lg text-gray-900">{(property.sizeAcres || 0).toLocaleString()}</span>
                                 <p className="text-sm text-[var(--text-secondary)]">Acres</p>
                             </div>
                             <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center text-center">

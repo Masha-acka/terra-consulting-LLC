@@ -22,7 +22,7 @@ export default function NewPropertyPage() {
         location: '',
         bedrooms: '',
         bathrooms: '',
-        sizeSqft: '',
+        sizeAcres: '',
         durationDays: '30',
         images: [] as string[],
     });
@@ -208,7 +208,7 @@ export default function NewPropertyPage() {
                                 <label className="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Size (Acres)</label>
                                 <input
                                     type="number"
-                                    value={formData.sizeSqft} onChange={e => setFormData({ ...formData, sizeSqft: e.target.value })}
+                                    value={formData.sizeAcres} onChange={e => setFormData({ ...formData, sizeAcres: e.target.value })}
                                     className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--sage-green)] outline-none transition-all"
                                     placeholder="e.g. 0.5"
                                 />

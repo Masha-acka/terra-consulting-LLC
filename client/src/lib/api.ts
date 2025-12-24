@@ -21,11 +21,9 @@ export interface Property {
     category: 'LAND' | 'HOUSE' | 'COMMERCIAL';
     status: 'SALE' | 'LEASE';
     location: string;
-    lat: number;
-    lng: number;
     bedrooms: number | null;
     bathrooms: number | null;
-    sizeSqft: number | null;
+    sizeAcres: number | null;
     images: string[];
     amenities: string[];
     titleVerified: boolean;
