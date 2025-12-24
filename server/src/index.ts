@@ -48,6 +48,7 @@ const corsOptions: cors.CorsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.set('trust proxy', 1); // Trust first proxy (Render/Vercel) for Secure/SameSite cookies
 app.use(express.json());
 app.use(cookieParser());
 
