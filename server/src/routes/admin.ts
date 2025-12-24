@@ -142,7 +142,13 @@ router.delete('/properties/:id', authenticateToken, requireRole(['ADMIN']), asyn
 // Get Leads (Admin View)
 router.get('/leads', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
     try {
-        const leads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } });
+        const leads = await prisma.lead.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: {
+                seller: { select: { name: true, email: true } },
+                property: { select: { title: true } }
+            }
+        });
         res.json(leads);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch leads' });
