@@ -9,7 +9,7 @@ services:
     plan: free # Can upgrade to starter ($7/month) for better performance
     rootDir: server
     buildCommand: npm install && npm run build && npx prisma generate
-    startCommand: npx prisma migrate deploy && node dist/index.js
+    startCommand: npx prisma db push && node dist/index.js
     
     # Environment Variables
     envVars:
