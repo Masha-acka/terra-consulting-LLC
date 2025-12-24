@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Download, MessageSquarePlus, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import AdminLeadForm from './AdminLeadForm';
 
 interface AdminLeadsTableProps {
@@ -24,12 +25,14 @@ export default function AdminLeadsTable({ leads, onRefresh }: AdminLeadsTablePro
             });
 
             if (res.ok) {
+                toast.success('Lead deleted successfully');
                 onRefresh();
             } else {
-                alert('Failed to delete lead');
+                toast.error('Failed to delete lead');
             }
         } catch (error) {
             console.error(error);
+            toast.error('An error occurred');
         } finally {
             setDeletingId(null);
         }

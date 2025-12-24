@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Trash2, UserPlus, AlertTriangle } from 'lucide-react';
+import toast from 'react-hot-toast';
 import AdminUserForm from './AdminUserForm';
 
 interface AdminUsersTableProps {
@@ -36,13 +37,14 @@ export default function AdminUsersTable({ users, onRefresh }: AdminUsersTablePro
             });
 
             if (res.ok) {
+                toast.success('User deleted successfully');
                 onRefresh();
             } else {
-                alert('Failed to delete user');
+                toast.error('Failed to delete user');
             }
         } catch (error) {
             console.error(error);
-            alert('Error deleting user');
+            toast.error('Error deleting user');
         } finally {
             setDeletingId(null);
         }

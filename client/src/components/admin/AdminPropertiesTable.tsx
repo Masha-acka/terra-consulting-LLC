@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Edit, Trash2, Plus } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Property } from '@/lib/api';
 
 interface AdminPropertiesTableProps {
@@ -15,14 +16,23 @@ export default function AdminPropertiesTable({ properties, onRefresh }: AdminPro
 
     const handleAction = async (id: string, action: 'expire' | 'extend') => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/properties/${id}/expire`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/properties/${id}/expire`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ action })
             });
-            onRefresh();
-        } catch (error) { console.error(error); }
+
+            if (res.ok) {
+                toast.success(`Property ${action === 'expire' ? 'expired' : 'extended'}`);
+                onRefresh();
+            } else {
+                toast.error(`Failed to ${action} property`);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('An error occurred');
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -36,12 +46,14 @@ export default function AdminPropertiesTable({ properties, onRefresh }: AdminPro
             });
 
             if (res.ok) {
+                toast.success('Property deleted successfully');
                 onRefresh();
             } else {
-                alert('Failed to delete property');
+                toast.error('Failed to delete property');
             }
         } catch (error) {
             console.error(error);
+            toast.error('An error occurred');
         } finally {
             setDeletingId(null);
         }
