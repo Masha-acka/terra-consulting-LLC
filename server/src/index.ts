@@ -65,6 +65,10 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leads', leadsRoutes);
 
+// Temporary fix admin route - REMOVE AFTER USE
+import fixAdminRoutes from './routes/fix-admin';
+app.use('/api', fixAdminRoutes);
+
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
