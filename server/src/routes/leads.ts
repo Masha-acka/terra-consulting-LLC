@@ -14,6 +14,16 @@ router.post('/', async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Name and email are required' });
         }
 
+        let derivedSellerId = sellerId;
+
+        // If propertyId provided but no sellerId, fetch owner from property
+        if (propertyId && !derivedSellerId) {
+            const property = await prisma.property.findUnique({ where: { id: propertyId } });
+            if (property && property.ownerId) {
+                derivedSellerId = property.ownerId;
+            }
+        }
+
         const lead = await prisma.lead.create({
             data: {
                 name,
@@ -21,7 +31,7 @@ router.post('/', async (req: Request, res: Response) => {
                 phone,
                 message,
                 propertyId: propertyId || null,
-                sellerId: sellerId || null,
+                sellerId: derivedSellerId || null,
                 status: 'NEW'
             }
         });
