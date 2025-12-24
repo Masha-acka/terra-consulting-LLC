@@ -65,10 +65,6 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leads', leadsRoutes);
 
-// Temporary seed route - REMOVE AFTER SEEDING
-import seedRoutes from './routes/seed';
-app.use('/api', seedRoutes);
-
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
