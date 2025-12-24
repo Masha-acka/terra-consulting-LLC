@@ -29,11 +29,18 @@ const corsOptions: cors.CorsOptions = {
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
 
+        // Check if allowed origin
         if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+            return callback(null, true);
         }
+
+        // Allow any Vercel deployment (Production & Preview)
+        if (origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+
+        console.log('❌ CSS Blocked Origin:', origin);
+        callback(new Error('Not allowed by CORS'));
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
