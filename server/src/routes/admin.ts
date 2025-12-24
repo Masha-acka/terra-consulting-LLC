@@ -1,5 +1,6 @@
 import express, { Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import { authenticateToken, AuthRequest, requireRole } from '../middleware/auth';
 
 const router = express.Router();
@@ -85,6 +86,92 @@ router.post('/properties/:id/expire', authenticateToken, requireRole(['ADMIN']),
         }
     } catch (error) {
         res.status(500).json({ error: 'Failed to modify expiration' });
+    }
+});
+
+// Create New User
+router.post('/users', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, email, password, role, phone } = req.body;
+
+        // Hashing
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                role,
+                phone,
+                isActive: true
+            }
+        });
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create user (Email likely exists)' });
+    }
+});
+
+// Delete User
+router.delete('/users/:id', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        // Cascade delete handled by database usually, but Prisma needs explicit delete if not configured in schema
+        // Assuming schema has onDelete: Cascade for relations, or we delete manually.
+        // For safety, let's try delete directly.
+        await prisma.user.delete({ where: { id } });
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
+// Delete Property
+router.delete('/properties/:id', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        await prisma.property.delete({ where: { id } });
+        res.json({ message: 'Property deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete property' });
+    }
+});
+
+// Get Leads (Admin View)
+router.get('/leads', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const leads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } });
+        res.json(leads);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch leads' });
+    }
+});
+
+// Create Manual Lead
+router.post('/leads', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, email, phone, message, propertyId } = req.body;
+        const lead = await prisma.lead.create({
+            data: {
+                name, email, phone, message, propertyId
+            }
+        });
+        res.status(201).json(lead);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create lead' });
+    }
+});
+
+// Delete Lead
+router.delete('/leads/:id', authenticateToken, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        await prisma.lead.delete({ where: { id } });
+        res.json({ message: 'Lead deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete lead' });
     }
 });
 
