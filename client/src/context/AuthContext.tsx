@@ -16,7 +16,7 @@ interface User {
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (user: User) => void;
+    login: (user: User, token?: string) => void;
     logout: () => void;
     isAuthenticated: boolean;
 }
@@ -32,9 +32,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Check if user is logged in
         async function checkAuth() {
             try {
+                // Get token from storage
+                const token = localStorage.getItem('terra_token');
+                const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
                 // First check API
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers,
                     cache: 'no-store',
                     credentials: 'include',
                 });
@@ -48,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 } else {
                     // Token invalid or expired
                     localStorage.removeItem('terra_user');
+                    localStorage.removeItem('terra_token');
                     setUser(null);
                 }
             } catch (error) {
@@ -65,9 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         checkAuth();
     }, []);
 
-    const login = (userData: User) => {
+    const login = (userData: User, token?: string) => {
         setUser(userData);
         localStorage.setItem('terra_user', JSON.stringify(userData));
+        if (token) {
+            localStorage.setItem('terra_token', token);
+        }
 
         // Redirect based on role
         if (userData.role === 'BUYER') {
@@ -83,6 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Clear user state immediately
         setUser(null);
         localStorage.removeItem('terra_user');
+        localStorage.removeItem('terra_token');
 
         try {
             // Call API to clear cookie

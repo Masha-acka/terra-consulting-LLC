@@ -33,7 +33,7 @@ export default function SellerLogin() {
             // Allow Agents too if we had them, OR check for Seller/Agent
             if (data.user.role !== 'SELLER' && data.user.role !== 'AGENT') throw new Error('Unauthorized area');
 
-            login(data.user);
+            login(data.user, data.token);
             router.push('/seller/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed');

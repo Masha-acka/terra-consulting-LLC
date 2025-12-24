@@ -38,7 +38,7 @@ export default function RegisterPage() {
                 throw new Error(data.error || 'Registration failed');
             }
 
-            login(data.user);
+            login(data.user, data.token);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Registration failed');
         } finally {

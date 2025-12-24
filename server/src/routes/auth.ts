@@ -52,6 +52,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
         res.status(201).json({
             message: 'Registration successful',
+            token, // Return token for client-side storage
             user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
     } catch (error) {
@@ -98,6 +99,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
         res.json({
             message: 'Login successful',
+            token, // Return token for client-side storage
             user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
     } catch (error) {
@@ -120,7 +122,9 @@ router.post('/logout', (req: Request, res: Response) => {
 // Get Current User
 router.get('/me', async (req: Request, res: Response) => {
     try {
-        const token = req.cookies?.token;
+        // Check cookie OR Authorization header
+        const token = req.cookies?.token || req.headers['authorization']?.split(' ')[1];
+
         if (!token) {
             res.status(401).json({ error: 'Not authenticated' });
             return;

@@ -32,7 +32,7 @@ export default function AdminLogin() {
             if (!res.ok) throw new Error(data.error);
             if (data.user.role !== 'ADMIN') throw new Error('Access Denied');
 
-            login(data.user);
+            login(data.user, data.token);
             router.push('/admin/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed');
