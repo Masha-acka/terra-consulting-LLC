@@ -17,7 +17,9 @@ services:
       - key: PORT
         value: 5000
       - key: DATABASE_URL
-        value: file:/var/data/dev.db
+        fromDatabase:
+          name: terra-db
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true # Render will generate a secure random secret
       - key: ALLOWED_ORIGINS
@@ -34,4 +36,11 @@ services:
     
     # Auto Deploy on push
     autoDeploy: true
+
+databases:
+  - name: terra-db
+    region: frankfurt
+    plan: free # Free tier managed PostgreSQL
+    databaseName: terra
+    user: terra_user
 
