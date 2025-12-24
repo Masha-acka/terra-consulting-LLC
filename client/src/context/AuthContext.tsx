@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         async function checkAuth() {
             try {
                 // Get token from storage
-                const token = localStorage.getItem('terra_token');
+                const token = sessionStorage.getItem('terra_token');
                 const headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
                 if (token) {
@@ -52,17 +52,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const userData = data.user || data; // Handle wrapped or unwrapped response
                     setUser(userData);
                     // Update local storage to keep in sync
-                    localStorage.setItem('terra_user', JSON.stringify(userData));
+                    sessionStorage.setItem('terra_user', JSON.stringify(userData));
                 } else {
                     // Token invalid or expired
-                    localStorage.removeItem('terra_user');
-                    localStorage.removeItem('terra_token');
+                    sessionStorage.removeItem('terra_user');
+                    sessionStorage.removeItem('terra_token');
                     setUser(null);
                 }
             } catch (error) {
                 console.warn('Auth check failed (likely network error or server down), falling back to local storage.');
-                // Checking localStorage for persisted user as fallback
-                const stored = localStorage.getItem('terra_user');
+                // Checking sessionStorage for persisted user as fallback
+                const stored = sessionStorage.getItem('terra_user');
                 if (stored) {
                     setUser(JSON.parse(stored));
                 }
@@ -76,9 +76,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = (userData: User, token?: string) => {
         setUser(userData);
-        localStorage.setItem('terra_user', JSON.stringify(userData));
+        sessionStorage.setItem('terra_user', JSON.stringify(userData));
         if (token) {
-            localStorage.setItem('terra_token', token);
+            sessionStorage.setItem('terra_token', token);
         }
 
         // Redirect based on role
@@ -94,8 +94,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = async () => {
         // Clear user state immediately
         setUser(null);
-        localStorage.removeItem('terra_user');
-        localStorage.removeItem('terra_token');
+        sessionStorage.removeItem('terra_user');
+        sessionStorage.removeItem('terra_token');
 
         try {
             // Call API to clear cookie
