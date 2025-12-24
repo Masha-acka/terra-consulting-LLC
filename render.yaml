@@ -8,7 +8,7 @@ services:
     region: frankfurt # Closest to Kenya
     plan: free # Can upgrade to starter ($7/month) for better performance
     rootDir: server
-    buildCommand: npm install && npm run build && npx prisma generate
+    buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npx prisma db push && node dist/index.js
     
     # Environment Variables
