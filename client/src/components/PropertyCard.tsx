@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Property, formatKES, formatUSD } from '@/lib/api';
+import { Property, formatKES, formatUSD, formatPriceByType } from '@/lib/api';
 import { MapPin, BedDouble, Bath, Maximize, Heart } from 'lucide-react';
 
 interface PropertyCardProps {
@@ -51,8 +51,8 @@ export default function PropertyCard({ property, isSelected, onClick, isFavorite
                             onToggleFavorite();
                         }}
                         className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-sm transition-all z-10 ${isFavorite
-                                ? 'bg-red-500 text-white'
-                                : 'bg-white/20 text-white hover:bg-white hover:text-red-500'
+                            ? 'bg-red-500 text-white'
+                            : 'bg-white/20 text-white hover:bg-white hover:text-red-500'
                             }`}
                     >
                         <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
@@ -62,12 +62,12 @@ export default function PropertyCard({ property, isSelected, onClick, isFavorite
                 {/* Price Tag */}
                 <div className="absolute bottom-4 left-4 right-4 z-10">
                     <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <p className="font-playfair font-bold text-2xl text-white tracking-tight drop-shadow-lg">
-                            {formatKES(property.priceKes)}
+                        <p className="font-playfair font-bold text-xl text-white tracking-tight drop-shadow-lg">
+                            {formatPriceByType(property.priceKes, property.priceType, 'KES')}
                         </p>
                         {property.priceUsd && (
-                            <p className="text-sm text-white/80 font-light">
-                                {formatUSD(property.priceUsd)}
+                            <p className="text-xs text-white/80 font-light">
+                                {formatPriceByType(property.priceUsd, property.priceType, 'USD')}
                             </p>
                         )}
                     </div>

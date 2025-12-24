@@ -103,12 +103,19 @@ export function formatUSD(amount: number): string {
     }).format(amount);
 }
 
+// Format price with type suffix
+export function formatPriceByType(amount: number, type: 'TOTAL' | 'PER_ACRE' | undefined | null, currency: 'KES' | 'USD'): string {
+    const formatted = currency === 'KES' ? formatKES(amount) : formatUSD(amount);
+    const suffix = type === 'PER_ACRE' ? ' per Acre' : ' whole property';
+    return `${formatted}${suffix}`;
+}
+
 // Generate WhatsApp link
 export function getWhatsAppLink(property: Property): string {
     // Update with your actual WhatsApp number
     const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254700000000';
     const message = encodeURIComponent(
-        `Hi Terra Consulting! I'm interested in the property: "${property.title}" located at ${property.location}. Price: ${formatKES(property.priceKes)}. Please share more details.`
+        `Hi Terra Consulting! I'm interested in the property: "${property.title}" located at ${property.location}. Price: ${formatPriceByType(property.priceKes, property.priceType, 'KES')}. Please share more details.`
     );
     return `https://wa.me/${phoneNumber}?text=${message}`;
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Property, formatKES, formatUSD, getWhatsAppLink } from '@/lib/api';
+import { Property, formatKES, formatUSD, formatPriceByType, getWhatsAppLink } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { MapPin, ArrowLeft, ChevronLeft, ChevronRight, BedDouble, Bath, Maximize, CheckCircle, Share2, Printer, X, Calendar, Copy, Check, MessageCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -103,7 +103,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
         const shareUrl = typeof window !== 'undefined' ? window.location.origin + `/properties/${property.id}` : '';
         const shareData = {
             title: property.title,
-            text: `Check out this property: ${property.title} - ${formatKES(property.priceKes)}`,
+            text: `Check out this property: ${property.title} - ${formatPriceByType(property.priceKes, property.priceType, 'KES')}`,
             url: shareUrl,
         };
 
@@ -113,7 +113,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
                 toast.success('Shared successfully!');
             } else {
                 // Fallback: copy to clipboard
-                await navigator.clipboard.writeText(`${property.title} - ${formatKES(property.priceKes)}\n${shareUrl}`);
+                await navigator.clipboard.writeText(`${property.title} - ${formatPriceByType(property.priceKes, property.priceType, 'KES')}\n${shareUrl}`);
                 setCopied(true);
                 toast.success('Link copied to clipboard!');
                 setTimeout(() => setCopied(false), 2000);
@@ -122,7 +122,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
             // User cancelled or error
             if ((error as Error).name !== 'AbortError') {
                 try {
-                    await navigator.clipboard.writeText(`${property.title} - ${formatKES(property.priceKes)}\n${shareUrl}`);
+                    await navigator.clipboard.writeText(`${property.title} - ${formatPriceByType(property.priceKes, property.priceType, 'KES')}\n${shareUrl}`);
                     setCopied(true);
                     toast.success('Link copied to clipboard!');
                     setTimeout(() => setCopied(false), 2000);
@@ -136,7 +136,7 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
     // Schedule viewing - opens WhatsApp with viewing request
     const handleScheduleViewing = () => {
         const phoneNumber = '+254700000000'; // Replace with actual number
-        const message = `Hello! I would like to schedule a viewing for:\n\n*${property.title}*\nLocation: ${property.location}\nPrice: ${formatKES(property.priceKes)}\n\nPlease let me know available dates and times.`;
+        const message = `Hello! I would like to schedule a viewing for:\n\n*${property.title}*\nLocation: ${property.location}\nPrice: ${formatPriceByType(property.priceKes, property.priceType, 'KES')}\n\nPlease let me know available dates and times.`;
         const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
@@ -397,8 +397,8 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
                                 <p class="overview-text">${property.description.substring(0, 120)}...</p>
                             </div>
                             <div class="price">
-                                <div class="price-main">${formatKES(property.priceKes)}</div>
-                                ${property.priceUsd ? `<div class="price-usd">${formatUSD(property.priceUsd)}</div>` : ''}
+                                <div class="price-main">${formatPriceByType(property.priceKes, property.priceType, 'KES')}</div>
+                                ${property.priceUsd ? `<div class="price-usd">${formatPriceByType(property.priceUsd, property.priceType, 'USD')}</div>` : ''}
                             </div>
                         </div>
                         
@@ -592,9 +592,9 @@ export default function PropertyDetail({ property, onClose }: { property: Proper
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="text-3xl font-bold text-[var(--forest-green)]">{formatKES(property.priceKes)}</p>
+                                <p className="text-3xl font-bold text-[var(--forest-green)]">{formatPriceByType(property.priceKes, property.priceType, 'KES')}</p>
                                 {property.priceUsd && (
-                                    <p className="text-base text-gray-500 font-medium">{formatUSD(property.priceUsd)}</p>
+                                    <p className="text-base text-gray-500 font-medium">{formatPriceByType(property.priceUsd, property.priceType, 'USD')}</p>
                                 )}
                             </div>
                         </div>

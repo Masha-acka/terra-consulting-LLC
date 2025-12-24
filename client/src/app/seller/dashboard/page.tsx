@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { Property, formatKES } from '@/lib/api';
+import { Property, formatKES, formatPriceByType } from '@/lib/api';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { Plus, MapPin, Edit, Trash2, Package, BarChart3, Building2, MessageSquare, UserPlus } from 'lucide-react';
 import ManualLeadForm from '@/components/ManualLeadForm';
@@ -149,7 +149,7 @@ export default function SellerDashboard() {
                                                         </div>
                                                     </td>
                                                     <td className="px-8 py-6 font-medium text-gray-900 font-playfair text-lg">
-                                                        {formatKES(property.priceKes)}
+                                                        {formatPriceByType(property.priceKes, property.priceType, 'KES')}
                                                     </td>
                                                     <td className="px-8 py-6">
                                                         <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${property.status === 'SALE'
