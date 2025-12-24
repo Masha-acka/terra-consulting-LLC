@@ -18,6 +18,7 @@ export interface Property {
     description: string;
     priceKes: number;
     priceUsd: number | null;
+    priceType: 'TOTAL' | 'PER_ACRE';
     category: 'LAND' | 'HOUSE' | 'COMMERCIAL';
     status: 'SALE' | 'LEASE';
     location: string;

@@ -16,6 +16,7 @@ model Property {
   description   String
   priceKes      Float    @map("price_kes")
   priceUsd      Float?   @map("price_usd")
+  priceType     String   @default("TOTAL") @map("price_type") // TOTAL or PER_ACRE
   
   // Category: LAND, HOUSE, COMMERCIAL
   category      String

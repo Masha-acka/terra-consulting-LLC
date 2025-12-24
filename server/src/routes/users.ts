@@ -99,7 +99,7 @@ router.get('/properties', authenticateToken, requireRole(['SELLER', 'AGENT', 'AD
 router.post('/properties', authenticateToken, requireRole(['SELLER', 'AGENT', 'ADMIN']), async (req: AuthRequest, res: Response) => {
     try {
         const {
-            title, description, priceKes, priceUsd, category, status,
+            title, description, priceKes, priceUsd, priceType, category, status,
             location, lat, lng, bedrooms, bathrooms, sizeAcres,
             images, amenities, durationDays
         } = req.body;
@@ -122,6 +122,7 @@ router.post('/properties', authenticateToken, requireRole(['SELLER', 'AGENT', 'A
                 description: description || '',
                 priceKes: parseFloat(priceKes) || 0,
                 priceUsd: priceUsd ? parseFloat(priceUsd) : null,
+                priceType: priceType || 'TOTAL',
                 category: category || 'LAND',
                 status: status || 'SALE',
                 location: location || 'Unknown',
@@ -163,7 +164,7 @@ router.put('/properties/:id', authenticateToken, requireRole(['SELLER', 'AGENT',
         }
 
         const {
-            title, description, priceKes, priceUsd, category, status,
+            title, description, priceKes, priceUsd, priceType, category, status,
             location, lat, lng, bedrooms, bathrooms, sizeAcres,
             images, amenities, durationDays
         } = req.body;
@@ -182,6 +183,7 @@ router.put('/properties/:id', authenticateToken, requireRole(['SELLER', 'AGENT',
                 title, description,
                 priceKes: parseFloat(priceKes),
                 priceUsd: priceUsd ? parseFloat(priceUsd) : null,
+                priceType: priceType || 'TOTAL',
                 category, status, location,
                 lat: lat ? parseFloat(lat) : null,
                 lng: lng ? parseFloat(lng) : null,

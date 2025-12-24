@@ -19,7 +19,7 @@ export default function EditPropertyPage() {
         title: '',
         description: '',
         priceKes: '',
-        priceUsd: '',
+        priceType: 'TOTAL', // TOTAL or PER_ACRE
         category: 'LAND',
         status: 'SALE',
         location: '',
@@ -29,6 +29,10 @@ export default function EditPropertyPage() {
         durationDays: '30',
         images: [] as string[],
     });
+
+    // Auto-calculate USD from KES (1 USD ≈ 130 KES)
+    const USD_RATE = 130;
+    const calculatedUsd = formData.priceKes ? Math.round(parseFloat(formData.priceKes) / USD_RATE) : 0;
 
     useEffect(() => {
         const loadProperty = async () => {
@@ -49,7 +53,7 @@ export default function EditPropertyPage() {
                     title: property.title,
                     description: property.description,
                     priceKes: property.priceKes.toString(),
-                    priceUsd: property.priceUsd ? property.priceUsd.toString() : '',
+                    priceType: property.priceType || 'TOTAL',
                     category: property.category,
                     status: property.status,
                     location: property.location,
@@ -126,6 +130,7 @@ export default function EditPropertyPage() {
 
         const payload = {
             ...formData,
+            priceUsd: calculatedUsd, // Auto-calculated from KES
             amenities: []
         };
 
@@ -215,16 +220,20 @@ export default function EditPropertyPage() {
                                     className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--sage-green)] outline-none transition-all"
                                     placeholder="15000000"
                                 />
+                                {calculatedUsd > 0 && (
+                                    <p className="text-sm text-gray-500 mt-1">≈ ${calculatedUsd.toLocaleString()} USD</p>
+                                )}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Price (USD - Optional)</label>
-                                <input
-                                    type="number"
-                                    value={formData.priceUsd} onChange={e => setFormData({ ...formData, priceUsd: e.target.value })}
-                                    className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--sage-green)] outline-none transition-all"
-                                    placeholder="115000"
-                                />
+                                <label className="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Price Type</label>
+                                <select
+                                    value={formData.priceType} onChange={e => setFormData({ ...formData, priceType: e.target.value })}
+                                    className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--sage-green)] outline-none transition-all bg-white"
+                                >
+                                    <option value="TOTAL">Total Price (Whole Property)</option>
+                                    <option value="PER_ACRE">Price Per Acre</option>
+                                </select>
                             </div>
                         </div>
 
